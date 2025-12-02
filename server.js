@@ -8,12 +8,14 @@ const server = createServer(app);
 app.use(express.static('public'));
 
 // -> socket.io
-const io = new Server(server);
+const io = new Server(server, {
+    connectionStateRecovery: {}
+});
 io.on('connection', (socket) => {
     console.log('🟢 a user connected');
-    socket.on('send_chat', (msg) => {
-        console.log('📩message received:', msg)
-        io.emit('broadcast_chat', msg)
+    socket.on('send_chat', (msg, username) => {
+        console.log('📩message received:', msg, 'from:', username)
+        io.emit('broadcast_chat', msg, username)
     })
 
     socket.on('disconnect', () => {
