@@ -1,4 +1,8 @@
-const socket = io();
+const socket = io({
+    auth: {
+        serverOffset: 0
+    }
+});
 
 const username = prompt('Gib deinen Namen ein');
 const name = document.querySelector('#name');
@@ -16,10 +20,10 @@ form.addEventListener('submit', (e) => {
     }
 });
 
-socket.on('broadcast_chat', (msg, username) => {
+socket.on('broadcast_chat', (msg, username, serverOffset) => {
     const item = document.createElement('li');
-    // item.textContent = msg + ' - ' + username;
     item.innerHTML = `<span class="name">${username}</span><span class="message">${msg}</span>`;
     messages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
+    socket.auth.serverOffset = serverOffset;
 })
