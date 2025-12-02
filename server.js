@@ -11,6 +11,11 @@ app.use(express.static('public'));
 const io = new Server(server);
 io.on('connection', (socket) => {
     console.log('🟢 a user connected');
+    socket.on('send_chat', (msg) => {
+        console.log('📩message received:', msg)
+        io.emit('broadcast_chat', msg)
+    })
+
     socket.on('disconnect', () => {
         console.log('🔴 user disconnected');
     });
