@@ -1,1 +1,1 @@
-console.log('client is loaded');
+const socket = io();
